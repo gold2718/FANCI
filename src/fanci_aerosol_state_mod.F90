@@ -22,6 +22,7 @@ module fanci_aerosol_state_mod
   private
 
   public :: fanci_aerosol_state
+  public :: fanci_aerosol_tend
   public :: aero_state_ptr
 
 
@@ -92,6 +93,19 @@ module fanci_aerosol_state_mod
   interface fanci_aerosol_state
      procedure :: constructor
   end interface fanci_aerosol_state
+
+  type, extends(aerosol_tend) :: fanci_aerosol_tend
+     ! internal tendencies?
+  contains
+     procedure :: reset => fanci_tend_reset
+     procedure :: add_tendency => fanci_tend_add_tendency
+
+     final :: destructor
+  end type fanci_aerosol_tend
+
+  interface fanci_aerosol_tend
+     procedure :: constructor
+  end interface fanci_aerosol_tend
 
   real(r8), parameter :: rho_aer_fallback = 1000._r8   ! kg/m3; only used where a range holds no aerosol
   real(r8), parameter :: rh2odens = 1._r8/rhoh2o
